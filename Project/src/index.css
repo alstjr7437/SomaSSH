@@ -187,10 +187,11 @@ footer .wm { font-family:var(--font-display); font-size:20px; color:var(--bg-app
 .step-node { display:flex; align-items:center; gap:8px; }
 .step-dot { width:26px; height:26px; border-radius:999px; display:grid; place-items:center; font-family:var(--font-display); font-size:14px; background:var(--neutral-100); color:var(--text-tertiary); border:1.5px solid var(--border); }
 .step-node.active .step-dot { background:var(--primary-500); color:#fff; border-color:var(--primary-500); }
-.step-node.done .step-dot { background:var(--success-500); color:#fff; border-color:var(--success-500); }
+.step-node.done .step-dot { background:var(--primary-500); color:#fff; border-color:var(--primary-500); }
 .step-label { font-size:13px; font-weight:600; color:var(--text-tertiary); }
-.step-node.active .step-label, .step-node.done .step-label { color:var(--text-primary); }
+.step-node.active .step-label { color:var(--text-primary); font-weight:700; }
 .step-line { flex:1; height:2px; background:var(--border); border-radius:2px; }
+.step-line.done { background:var(--primary-500); }
 
 .modal-body { padding:24px; overflow-y:auto; }
 .modal-step { display:flex; flex-direction:column; gap:16px; }
