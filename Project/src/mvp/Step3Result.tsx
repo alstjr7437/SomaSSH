@@ -59,7 +59,7 @@ export default function Step3Result({ insurerLabel, fields, surgery }: Props) {
           {insurerLabel} 기준 · 병원에서 {guide.hospitalDocs.length}개 · 직접 {guide.selfDocs.length}개
           {loading ? ' 확인 중이에요.' : ' 챙기면 준비가 쉬워요.'}
         </div>
-        <span className={`result-source ${guide.source}`}>{guide.source === 'notion' ? 'Notion DB' : '기본 안내'}</span>
+        <span className={`result-source ${guide.source}`}>{guide.source === 'notion' ? '보험사 기준' : '기본 안내'}</span>
       </div>
 
       {guide.warning && <div className="result-warning">{guide.warning}</div>}
@@ -67,7 +67,14 @@ export default function Step3Result({ insurerLabel, fields, surgery }: Props) {
       <div className="res-group-label">🏥 병원에서 받아야 할 서류</div>
       {guide.hospitalDocs.map((doc, i) => <ResultItem doc={doc} icon={i === 0 ? '✓' : '📄'} key={`${doc.name}-${i}`} />)}
 
-      <div className="res-group-label">✍️ 직접 준비할 서류</div>
+      <div className="res-group-head">
+        <span className="res-group-label">✍️ 직접 준비할 서류</span>
+        {(guide.downloads || []).map((file) => (
+          <a className="download-doc" href={file.url} target="_blank" rel="noreferrer" key={file.url}>
+            서류 다운로드
+          </a>
+        ))}
+      </div>
       {guide.selfDocs.map((doc, i) => <ResultItem doc={doc} icon="📝" key={`${doc.name}-${i}`} />)}
 
       {guide.notes.map((note, i) => <p className="result-note" key={i}>{note}</p>)}

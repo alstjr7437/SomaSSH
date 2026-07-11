@@ -5,12 +5,18 @@ export interface ResultDoc {
   tagKind: 'hospital' | 'self';
 }
 
+export interface DocumentDownload {
+  name: string;
+  url: string;
+}
+
 export interface ClaimDocumentGuide {
   claimType: string;
   title: string;
   source: 'notion' | 'fallback';
   hospitalDocs: ResultDoc[];
   selfDocs: ResultDoc[];
+  downloads?: DocumentDownload[];
   notes: string[];
   warning?: string;
 }

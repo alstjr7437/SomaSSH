@@ -13,12 +13,18 @@ interface ResultDoc {
   tagKind: DocKind;
 }
 
+interface DocumentDownload {
+  name: string;
+  url: string;
+}
+
 interface Guide {
   claimType: ClaimType;
   title: string;
   source: 'notion' | 'fallback';
   hospitalDocs: ResultDoc[];
   selfDocs: ResultDoc[];
+  downloads?: DocumentDownload[];
   notes: string[];
   warning?: string;
 }
@@ -33,6 +39,12 @@ interface NotionProperty {
   checkbox?: boolean;
   url?: string;
   formula?: { string?: string; number?: number; boolean?: boolean };
+  files?: {
+    name?: string;
+    type?: 'file' | 'external';
+    file?: { url?: string; expiry_time?: string };
+    external?: { url?: string };
+  }[];
 }
 
 interface NotionPage {
@@ -238,6 +250,14 @@ const notesFromProperty = (properties: Record<string, NotionProperty>, names: st
     .map((item) => item.trim())
     .filter(Boolean);
 
+const downloadsFromProperty = (properties: Record<string, NotionProperty>, names: string[]) =>
+  (firstProperty(properties, names)?.files || [])
+    .map((file) => ({
+      name: file.name || '서류 다운로드',
+      url: file.type === 'external' ? file.external?.url || '' : file.file?.url || '',
+    }))
+    .filter((file) => file.url);
+
 const docsFromProperty = (
   properties: Record<string, NotionProperty>,
   names: string[],
@@ -246,7 +266,7 @@ const docsFromProperty = (
 ) =>
   listFromProperty(properties, names).map((name) => ({
     name,
-    desc: tagKind === 'hospital' ? 'Notion DB에서 불러온 병원 발급 서류예요.' : 'Notion DB에서 불러온 직접 준비 서류예요.',
+    desc: tagKind === 'hospital' ? '보험사 기준표에서 불러온 병원 발급 서류예요.' : '보험사 기준표에서 불러온 직접 준비 서류예요.',
     tag,
     tagKind,
   }));
@@ -297,6 +317,7 @@ const pageToGuide = (page: NotionPage, claimType: ClaimType): Guide => {
   const fallback = FALLBACK_GUIDES[claimType];
   const hospitalDocs = docsFromProperty(properties, ['병원서류', '병원 서류', '필수서류', '필수 서류', 'hospitalDocs'], '병원 발급', 'hospital');
   const selfDocs = docsFromProperty(properties, ['직접서류', '직접 서류', '추가서류', '추가 서류', 'selfDocs'], '직접 준비', 'self');
+  const downloads = downloadsFromProperty(properties, ['서류파일', '서류 파일', '파일', 'downloads']);
   const notes = notesFromProperty(properties, ['주의사항', '안내문구', '안내 문구', 'notes']);
 
   return {
@@ -305,6 +326,7 @@ const pageToGuide = (page: NotionPage, claimType: ClaimType): Guide => {
     source: 'notion',
     hospitalDocs: hospitalDocs.length ? hospitalDocs : fallback.hospitalDocs,
     selfDocs: selfDocs.length ? selfDocs : fallback.selfDocs,
+    downloads,
     notes: notes.length ? notes : fallback.notes,
   };
 };
@@ -343,7 +365,7 @@ const getClaimDocuments = async (claimType: ClaimType, insurer = '') => {
       .sort((a, b) => insurerScore(b, insurer) - insurerScore(a, insurer))
       .find((item) => insurerScore(item, insurer) > 0);
     if (!page) {
-      return { ...fallback, warning: 'Notion DB에서 해당 청구 유형을 찾지 못해 기본 안내를 표시합니다.' };
+      return { ...fallback, warning: '보험사 기준표에서 해당 청구 유형을 찾지 못해 기본 안내를 표시합니다.' };
     }
     return pageToGuide(page, claimType);
   } catch (error) {
@@ -351,8 +373,8 @@ const getClaimDocuments = async (claimType: ClaimType, insurer = '') => {
     return {
       ...fallback,
       warning: message.includes('Could not find database')
-        ? 'Notion DB를 찾지 못했습니다. DB ID와 integration 공유 권한을 확인하세요.'
-        : `Notion 조회 실패: ${message}`,
+        ? '보험사 기준표를 찾지 못해 기본 안내를 표시합니다.'
+        : `보험사 기준표 조회 실패: ${message}`,
     };
   }
 };
