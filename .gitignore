@@ -64,3 +64,4 @@ Icon
 
 # ===== Misc =====
 *.pem
+.gstack/
