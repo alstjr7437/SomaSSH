@@ -235,11 +235,21 @@ footer .wm { font-family:var(--font-display); font-size:20px; color:var(--bg-app
 .ex-chip.selected { background:var(--primary-50); border:2px solid var(--primary-300); color:var(--primary-700); }
 
 .fields-stack { display:flex; flex-direction:column; gap:14px; }
-.field-block { display:flex; flex-direction:column; gap:6px; }
+.ai-card { display:flex; flex-direction:column; gap:8px; border:1px solid var(--success-300); border-radius:var(--radius-sm); padding:14px; background:var(--success-50); }
+.ai-card.tesseract { border-color:var(--secondary-300); background:var(--secondary-50); }
+.ai-card.example { border-color:var(--border); background:var(--neutral-100); }
+.ai-label { font-size:12px; font-weight:800; color:var(--success-700); }
+.ai-card.tesseract .ai-label { color:var(--secondary-700); }
+.ai-card p { font-size:13px; line-height:1.55; color:var(--text-secondary); }
+.ai-card small { font-size:11px; line-height:1.45; color:var(--text-tertiary); }
+.ai-chips { display:flex; flex-wrap:wrap; gap:6px; }
+.ai-chips span { border-radius:999px; padding:4px 8px; background:var(--surface); border:1px solid var(--border); color:var(--text-secondary); font-size:11px; font-weight:700; }
+.field-block { display:flex; flex-direction:column; gap:6px; min-width:0; }
 .field-block label { font-size:12px; font-weight:700; color:var(--text-tertiary); }
+.field-block .field { flex:0 0 auto; width:100%; height:52px; min-height:52px; padding:0 18px; }
 .field:disabled { background:var(--neutral-100); color:var(--text-tertiary); cursor:not-allowed; }
 .field-hint { font-size:11px; line-height:1.45; color:var(--text-tertiary); }
-.field-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.field-2 { display:grid; grid-template-columns:1fr 1fr; align-items:start; gap:14px; }
 .check-row { display:flex; align-items:center; gap:9px; cursor:pointer; }
 .check-box { width:20px; height:20px; border-radius:6px; border:2px solid var(--border); display:grid; place-items:center; color:#fff; font-size:12px; font-weight:700; flex-shrink:0; transition:background .15s, border-color .15s; }
 .check-row.on .check-box { background:var(--primary-500); border-color:var(--primary-500); }

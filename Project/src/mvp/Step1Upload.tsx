@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { EXAMPLE_CHIPS } from '../data/examples';
-import type { Fields, UploadInfo } from './types';
+import type { AiAnalysis, Fields, UploadInfo } from './types';
 
 interface Props {
   selectedExample: number | null;
@@ -8,6 +8,7 @@ interface Props {
   ready: boolean;
   upload: UploadInfo | null;
   fields: Fields;
+  aiAnalysis: AiAnalysis | null;
   surgery: boolean;
   onSelectExample: (i: number) => void;
   onUploadFile: (file: File) => void;
@@ -22,6 +23,7 @@ export default function Step1Upload({
   ready,
   upload,
   fields,
+  aiAnalysis,
   surgery,
   onSelectExample,
   onUploadFile,
@@ -120,6 +122,18 @@ export default function Step1Upload({
 
       {ready && !analyzing && (
         <div className="fields-stack">
+          {aiAnalysis && (
+            <div className={`ai-card ${aiAnalysis.source}`}>
+              <span className="ai-label">{aiAnalysis.source === 'example' ? '예시 분석 결과' : '분석 결과'}</span>
+              <p>{aiAnalysis.summary}</p>
+              {aiAnalysis.evidence.length > 0 && (
+                <div className="ai-chips">
+                  {aiAnalysis.evidence.map((item) => <span key={item}>{item}</span>)}
+                </div>
+              )}
+              {aiAnalysis.warnings.map((item) => <small key={item}>{item}</small>)}
+            </div>
+          )}
           <div className="field-2">
             <div className="field-block">
               <label>문서 유형</label>
