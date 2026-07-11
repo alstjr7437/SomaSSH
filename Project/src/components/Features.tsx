@@ -19,7 +19,7 @@ export default function Features() {
                 <div className="bar" style={{ width: '88%' }}></div>
                 <div className="bar" style={{ width: '59%' }}></div>
               </div>
-              <div style={{ color: 'var(--primary-500)', fontSize: 22, fontWeight: 700 }}>→</div>
+              <div className="f-arrow" style={{ color: 'var(--primary-500)', fontSize: 22, fontWeight: 700 }}>→</div>
               <div className="mini-list">
                 <div className="t">필요 서류 3개</div>
                 <div className="mini-row"><span className="mini-chk">✓</span>진료비 영수증</div>

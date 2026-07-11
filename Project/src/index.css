@@ -290,16 +290,25 @@ footer .wm { font-family:var(--font-display); font-size:20px; color:var(--bg-app
   .signup-box { padding:36px 24px; }
 }
 @media (max-width:640px) {
-  section { padding:56px 0; }
-  .hero h1 { font-size:34px; }
+  section { padding:48px 0; }
+  .nav-cta { display:none; }
+  .hero { padding:36px 0 40px; }
+  .hero h1 { font-size:29px; }
+  .hero .sub { font-size:16px; }
+  .cta-row { width:100%; flex-direction:column; }
+  .btn-primary, .btn-sage { width:100%; }
   .sec-h2 { font-size:26px; }
-  .signup-box h2 { font-size:24px; }
+  .f-visual.coral { flex-direction:column; height:auto; }
+  .f-visual.coral .mini-doc { width:100%; }
+  .f-visual.coral .mini-list { flex:none; width:100%; }
+  .f-visual.coral .f-arrow { transform:rotate(90deg); }
   .flow { grid-template-columns:1fr; }
+  .center-cta .btn { width:100%; }
+  .signup-box { padding:34px 22px; }
+  .signup-box h2 { font-size:24px; }
   .field-row { flex-direction:column; }
   .field-2 { grid-template-columns:1fr; }
   .insurer-grid { grid-template-columns:1fr 1fr; }
-  .foot-row { flex-direction:column; align-items:flex-start; gap:18px; }
-  .foot-links { flex-wrap:wrap; }
-  .btn-primary, .btn-sage { width:100%; }
-  .cta-row { width:100%; }
+  .foot-row { flex-direction:column; align-items:center; gap:16px; text-align:center; }
+  .foot-links { display:none; }
 }
