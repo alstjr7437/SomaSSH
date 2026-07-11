@@ -2,6 +2,7 @@ import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import { useMvp } from './MvpContext';
 import { EXAMPLES } from '../data/examples';
 import { DEFAULT_INSURER } from '../data/insurers';
+import { extractFieldsFromImage } from '../lib/ocrFields';
 import { receiptSVG } from '../lib/receiptSVG';
 import { EMPTY_FIELDS, type Fields, type UploadInfo } from './types';
 import Step1Upload from './Step1Upload';
@@ -82,15 +83,32 @@ export default function MvpModal() {
 
   function uploadFile(file: File) {
     const reader = new FileReader();
-    reader.onload = () => {
+    reader.onload = async () => {
       const url = reader.result as string;
       setSelectedExample(null);
-      startAnalysis(
-        { name: file.name, url, downloadName: file.name },
-        false,
-        { docType: '진료비 영수증', date: '', diag: '', cost: '' },
-        false,
-      );
+      clearTimer();
+      setUpload({ name: file.name, url, downloadName: file.name, status: 'OCR로 영수증을 읽고 있어요…' });
+      setAnalyzing(true);
+      setReady(false);
+
+      try {
+        const result = await extractFieldsFromImage(file);
+        setFields({
+          docType: result.fields.docType || '진료비 영수증',
+          date: result.fields.date,
+          diag: result.fields.diag,
+          cost: result.fields.cost,
+        });
+        setSurgery(result.surgery);
+        setUpload((u) => (u ? { ...u, status: 'OCR 분석 완료 · 필요한 값은 직접 수정할 수 있어요' } : u));
+      } catch {
+        setFields({ docType: '진료비 영수증', date: '', diag: '', cost: '' });
+        setSurgery(false);
+        setUpload((u) => (u ? { ...u, status: 'OCR 실패 · 직접 입력해 주세요' } : u));
+      } finally {
+        setAnalyzing(false);
+        setReady(true);
+      }
     };
     reader.readAsDataURL(file);
   }
@@ -144,7 +162,7 @@ export default function MvpModal() {
             />
           )}
           {step === 2 && <Step2Insurer selected={insurer} onSelect={setInsurer} />}
-          {step === 3 && <Step3Result insurerLabel={insurer} />}
+          {step === 3 && <Step3Result insurerLabel={insurer} fields={fields} surgery={surgery} />}
         </div>
 
         <div className={`modal-foot step-${step}`}>
