@@ -147,7 +147,7 @@ export default function MvpModal() {
           {step === 3 && <Step3Result insurerLabel={insurer} />}
         </div>
 
-        <div className="modal-foot">
+        <div className={`modal-foot step-${step}`}>
           <span className="step-count">{step} / 3 단계</span>
           <div className="foot-btns">
             {step > 1 && (

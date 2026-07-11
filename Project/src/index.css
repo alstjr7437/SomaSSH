@@ -311,4 +311,15 @@ footer .wm { font-family:var(--font-display); font-size:20px; color:var(--bg-app
   .insurer-grid { grid-template-columns:1fr 1fr; }
   .foot-row { flex-direction:column; align-items:center; gap:16px; text-align:center; }
   .foot-links { display:none; }
+
+  /* MVP modal footer — match mobile design (otDSE) */
+  .modal-foot { padding:14px 20px; }
+  .modal-foot.step-2 .step-count,
+  .modal-foot.step-3 .step-count { display:none; }
+  .modal-foot.step-2 .foot-btns { flex:1; }
+  .modal-foot.step-2 .foot-btns .mbtn.primary { flex:1; }
+  .modal-foot.step-3 { flex-direction:column; align-items:stretch; }
+  .modal-foot.step-3 .foot-btns { width:100%; }
+  .modal-foot.step-3 .foot-btns .mbtn.ghost { display:none; }
+  .modal-foot.step-3 .foot-btns .mbtn.primary { flex:1; }
 }
