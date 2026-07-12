@@ -117,7 +117,7 @@ export default function MvpModal() {
             const cls = n === step ? 'active' : n < step ? 'done' : '';
             return (
               <Fragment key={n}>
-                {idx > 0 && <div className="step-line" />}
+                {idx > 0 && <div className={`step-line${step >= n ? ' done' : ''}`} />}
                 <div className={`step-node ${cls}`.trim()}>
                   <span className="step-dot">{n < step ? '✓' : n}</span>
                   <span className="step-label">{label}</span>
